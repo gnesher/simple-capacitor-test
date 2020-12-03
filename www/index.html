@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Awesome Capacitor App</title>
+  <meta name="viewport"
+    content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="msapplication-tap-highlight" content="no">
+
+  <script type="module"
+    src="https://unpkg.com/@ionic/pwa-elements@latest/dist/ionicpwaelements/ionicpwaelements.esm.js"></script>
+
+  <link rel="stylesheet" href="css/style.css">
+  <meta name="theme-color" content="#31d53d">
+
+</head>
+
+<body>
+  <capacitor-welcome></capacitor-welcome>
+
+  <script src="capacitor.js"></script>
+  <!--
+    npm install the plugin and import the generated plugin javascript file here
+    you can also try to use import within the module bellow (it supports imports, but I've never done this)
+  -->
+
+
+  <div>
+    <div><button id="search">Search For Bridges</button></div>
+    <div><button id="connect">Connect to Bridge</button><input id="address">Device Address</div>
+    <div><button id="check">Check Locator Connection</button></div>
+    <div><button id="start">Start Listening</button></div>
+    <div><button id="stop">Stop Listening</button></div>
+    <div><button id="disconnect">Disconnect</button></div>
+  </div>
+
+  <script type="module">
+
+    document.getElementById("search").onclick = function () {
+      console.log("search");
+
+      // test proving we have access to Capacitor plugins
+      // Capacitor.Plugins.Clipboard.read().then((res) => {
+      //   console.log(res);
+      // });
+
+      Capacitor.Plugins.Locator.discoverBridges().then((res) => {
+        // raw data of discovered bridges
+        console.log(res);
+      })
+    }
+
+    // we use the address inside the input field to choose which bridge to connect to
+    document.getElementById("connect").onclick = function () {
+      console.log("connect");
+      const address = document.getElementById("address").value;
+
+      Capacitor.Plugins.Locator.discoverBridges(address).then((res) => {
+        // raw data of discovered bridges
+        console.log(res);
+      })
+    }
+
+    document.getElementById("check").onclick = function () {
+      console.log("check");
+      Capacitor.Plugins.Locator.checkConnection().then((res) => {
+        console.log(res);
+      })
+    }
+
+    document.getElementById("start").onclick = function () {
+      console.log("start");
+      Capacitor.Plugins.Locator.startListening().then((res) => {
+        console.log(res);
+      });
+
+      Capacitor.App.addListener('appStateChange', (data) => {
+
+        console.log('Locator Data', data);
+      });
+
+    }
+
+    document.getElementById("stop").onclick = function () {
+      console.log("stop");
+      Capacitor.Plugins.Locator.stopListening().then((res) => {
+        console.log(res);
+      });
+
+      Capacitor.App.removeAllListeners();
+
+    }
+
+    document.getElementById("disconnect").onclick = function () {
+      console.log("disconnect");
+      Capacitor.Plugins.Locator.disconnect().then((res) => {
+        console.log(res);
+      });
+    }
+
+  </script>
+</body>
+
+</html>

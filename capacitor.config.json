@@ -1,0 +1,12 @@
+{
+  "appId": "com.demo.locator",
+  "appName": "demo-locator",
+  "bundledWebRuntime": true,
+  "npmClient": "npm",
+  "webDir": "www",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  }
+}
